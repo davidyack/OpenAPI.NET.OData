@@ -27,12 +27,29 @@ namespace Microsoft.OpenApi.OData.Edm
 
         private IEdmModel _model;
 
+        private OpenApiConvertSettings _settings;
+
+        public ODataPathProvider()
+        {
+            _settings = new OpenApiConvertSettings();
+        }
+        public ODataPathProvider(OpenApiConvertSettings settings)
+        {
+            _settings = settings;
+        }
+
         /// <summary>
         /// Can filter the <see cref="IEdmElement"/> or not.
         /// </summary>
         /// <param name="element">The Edm element.</param>
         /// <returns>True/false.</returns>
-        public virtual bool CanFilter(IEdmElement element) => true;
+        public virtual bool CanFilter(IEdmElement element)
+        {
+            if (_settings.EdmFilter != null)
+                return _settings.EdmFilter(element);
+            else
+                return true;
+        }
 
         /// <summary>
         /// Generate the list of <see cref="ODataPath"/> based on the given <see cref="IEdmModel"/>.

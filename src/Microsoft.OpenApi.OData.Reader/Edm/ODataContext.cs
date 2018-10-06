@@ -56,7 +56,7 @@ namespace Microsoft.OpenApi.OData.Edm
 
             _authorizationProvider = new AuthorizationProvider(model);
             _httpRequestProvider = new HttpRequestProvider(model);
-            _pathProvider = new ODataPathProvider();
+            _pathProvider = new ODataPathProvider(settings);
 
             if (settings.EnableKeyAsSegment != null)
             {

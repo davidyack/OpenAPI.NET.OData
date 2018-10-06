@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using Microsoft.OData.Edm;
 using System;
 
 namespace Microsoft.OpenApi.OData
@@ -74,6 +75,11 @@ namespace Microsoft.OpenApi.OData
         /// </summary>
         public bool IEEE754Compatible { get; set; }
 
+        /// <summary>
+        /// Gets/sets a filter for the elements processed by the converter
+        /// </summary>
+        public Func<IEdmElement , bool> EdmFilter { get; set; }
+
         internal OpenApiConvertSettings Clone()
         {
             var newSettings = new OpenApiConvertSettings();
@@ -90,6 +96,7 @@ namespace Microsoft.OpenApi.OData
             newSettings.EnableOperationId = this.EnableOperationId;
             newSettings.VerifyEdmModel = this.VerifyEdmModel;
             newSettings.IEEE754Compatible = this.IEEE754Compatible;
+            newSettings.EdmFilter = this.EdmFilter;
 
             return newSettings;
         }
