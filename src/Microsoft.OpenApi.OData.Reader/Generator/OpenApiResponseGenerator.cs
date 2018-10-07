@@ -61,10 +61,15 @@ namespace Microsoft.OpenApi.OData.Generator
         {
             Utils.CheckArgumentNull(context, nameof(context));
 
-            return new Dictionary<string, OpenApiResponse>
+            if (context.Settings.IncludeErrorSchema)
+            {
+                return new Dictionary<string, OpenApiResponse>
             {
                 { "error", CreateErrorResponse() }
             };
+            }
+            else
+                return new Dictionary<string, OpenApiResponse>();
         }
 
         /// <summary>
@@ -96,7 +101,22 @@ namespace Microsoft.OpenApi.OData.Generator
 
             if (operation.IsAction())
             {
-                responses.Add(Constants.StatusCode204, Constants.StatusCode204.GetResponse());
+                //responses.Add(Constants.StatusCode204, Constants.StatusCode204.GetResponse());
+                OpenApiResponse response = new OpenApiResponse
+                {
+                    Description = "Success",
+                    Content = new Dictionary<string, OpenApiMediaType>
+                    {
+                        {
+                            Constants.ApplicationJsonMediaType,
+                            new OpenApiMediaType
+                            {
+                                Schema = context.CreateEdmTypeSchema(operation.ReturnType)
+                            }
+                        }
+                    }
+                };
+                responses.Add(Constants.StatusCode200, response);
             }
             else
             {

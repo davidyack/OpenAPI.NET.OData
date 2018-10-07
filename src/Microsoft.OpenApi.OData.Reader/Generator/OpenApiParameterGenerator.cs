@@ -30,16 +30,20 @@ namespace Microsoft.OpenApi.OData.Generator
         {
             Utils.CheckArgumentNull(context, nameof(context));
 
-            // It allows defining query options and headers that can be reused across operations of the service.
-            // The value of parameters is a map of Parameter Objects.
-            return new Dictionary<string, OpenApiParameter>
+            if (context.Settings.IncludeQueryOptionParameters)
             {
-                { "top", CreateTop() },
-                { "skip", CreateSkip() },
-                { "count", CreateCount() },
-                { "filter", CreateFilter() },
-                { "search", CreateSearch() },
-            };
+                // It allows defining query options and headers that can be reused across operations of the service.
+                // The value of parameters is a map of Parameter Objects.
+                return new Dictionary<string, OpenApiParameter>
+                {
+                    { "top", CreateTop() },
+                    { "skip", CreateSkip() },
+                    { "count", CreateCount() },
+                    { "filter", CreateFilter() },
+                    { "search", CreateSearch() },
+                };
+            }
+            else return new Dictionary<string, OpenApiParameter>();
         }
 
         /// <summary>

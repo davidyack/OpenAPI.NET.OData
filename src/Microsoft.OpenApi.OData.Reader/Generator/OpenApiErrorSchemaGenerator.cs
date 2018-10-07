@@ -28,14 +28,17 @@ namespace Microsoft.OpenApi.OData.Generator
 
             IDictionary<string, OpenApiSchema> schemas = new Dictionary<string, OpenApiSchema>();
 
-            // odata.error
-            schemas.Add("odata.error", CreateErrorSchema());
+            if (context.Settings.IncludeErrorSchema)
+            {
+                // odata.error
+                schemas.Add("odata.error", CreateErrorSchema());
+            
+                // odata.error.main
+                schemas.Add("odata.error.main", CreateErrorMainSchema());
 
-            // odata.error.main
-            schemas.Add("odata.error.main", CreateErrorMainSchema());
-
-            // odata.error.detail
-            schemas.Add("odata.error.detail", CreateErrorDetailSchema());
+                // odata.error.detail
+                schemas.Add("odata.error.detail", CreateErrorDetailSchema());
+            }
 
             return schemas;
         }

@@ -76,6 +76,16 @@ namespace Microsoft.OpenApi.OData
         public bool IEEE754Compatible { get; set; }
 
         /// <summary>
+        /// Gets/set a value indicating whether to generate query option parameters
+        /// </summary>
+        public bool IncludeQueryOptionParameters { get; set; } = true;
+
+        /// <summary>
+        /// Gets/set a value indicating whether to generate error schema
+        /// </summary>
+        public bool IncludeErrorSchema { get; set; } = true;
+
+        /// <summary>
         /// Gets/sets a filter for the elements processed by the converter
         /// </summary>
         public Func<IEdmElement , bool> EdmFilter { get; set; }

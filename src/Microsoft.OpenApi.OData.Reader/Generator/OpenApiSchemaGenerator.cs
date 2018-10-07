@@ -43,8 +43,11 @@ namespace Microsoft.OpenApi.OData.Generator
                 {
                     case EdmSchemaElementKind.TypeDefinition: // Type definition
                         {
-                            IEdmType reference = (IEdmType)element;
-                            schemas.Add(reference.FullTypeName(), context.CreateSchemaTypeSchema(reference));
+                            if (CanFilter(context, element))
+                            {
+                                IEdmType reference = (IEdmType)element;
+                                schemas.Add(reference.FullTypeName(), context.CreateSchemaTypeSchema(reference));
+                            }
                         }
                         break;
                 }
@@ -63,6 +66,14 @@ namespace Microsoft.OpenApi.OData.Generator
             }
 
             return schemas;
+        }
+
+        private  static bool CanFilter(ODataContext context,IEdmElement element)
+        {
+            if (context.Settings.EdmFilter != null)
+                return context.Settings.EdmFilter(element);
+            else
+                return true;
         }
 
         /// <summary>
