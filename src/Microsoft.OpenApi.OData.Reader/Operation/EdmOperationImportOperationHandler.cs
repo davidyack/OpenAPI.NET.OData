@@ -61,6 +61,7 @@ namespace Microsoft.OpenApi.OData.Operation
         /// <inheritdoc/>
         protected override void SetResponses(OpenApiOperation operation)
         {
+            
             // The responses object contains a name/value pair for the success case (HTTP response code 200)
             // describing the structure of the success response by referencing an appropriate schema
             // in the global schemas. In addition, it contains a default name/value pair for

@@ -330,6 +330,7 @@ namespace Microsoft.OpenApi.OData.Edm
                 {
                     continue;
                 }
+                AppendBoundOperation(edmOperation, isCollection, bindingEntityType);
             }
         }
 
@@ -437,6 +438,21 @@ namespace Microsoft.OpenApi.OData.Edm
                     }
                 }
             }
+
+            return found;
+        }
+        private bool AppendBoundOperation(IEdmOperation edmOperation, bool isCollection, IEdmEntityType bindingEntityType)
+        {
+            bool found = false;
+
+            _allNavigationSources.TryGetValue(bindingEntityType, out IList<IEdmNavigationSource> baseNavigationSource);
+
+            ODataPath newPath = new ODataPath(new ODataNavigationSourceSegment(baseNavigationSource.FirstOrDefault()), 
+                new ODataTypeCastSegment(bindingEntityType),
+                new ODataOperationSegment(edmOperation));
+            AppendPath(newPath);
+            found = true;
+                           
 
             return found;
         }

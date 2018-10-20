@@ -98,14 +98,15 @@ namespace Microsoft.OpenApi.OData.Generator
             Utils.CheckArgumentNull(operation, nameof(operation));
 
             OpenApiResponses responses = new OpenApiResponses();
-
-            if (operation.IsAction())
+            if (operation.ReturnType != null)
             {
-                //responses.Add(Constants.StatusCode204, Constants.StatusCode204.GetResponse());
-                OpenApiResponse response = new OpenApiResponse
+                if (operation.IsAction())
                 {
-                    Description = "Success",
-                    Content = new Dictionary<string, OpenApiMediaType>
+                    //responses.Add(Constants.StatusCode204, Constants.StatusCode204.GetResponse());
+                    OpenApiResponse response = new OpenApiResponse
+                    {
+                        Description = "Success",
+                        Content = new Dictionary<string, OpenApiMediaType>
                     {
                         {
                             Constants.ApplicationJsonMediaType,
@@ -115,15 +116,16 @@ namespace Microsoft.OpenApi.OData.Generator
                             }
                         }
                     }
-                };
-                responses.Add(Constants.StatusCode200, response);
-            }
-            else
-            {
-                OpenApiResponse response = new OpenApiResponse
+                    };
+                    responses.Add(Constants.StatusCode200, response);
+                }
+                else
                 {
-                    Description = "Success",
-                    Content = new Dictionary<string, OpenApiMediaType>
+
+                    OpenApiResponse response = new OpenApiResponse
+                    {
+                        Description = "Success",
+                        Content = new Dictionary<string, OpenApiMediaType>
                     {
                         {
                             Constants.ApplicationJsonMediaType,
@@ -133,10 +135,11 @@ namespace Microsoft.OpenApi.OData.Generator
                             }
                         }
                     }
-                };
-                responses.Add(Constants.StatusCode200, response);
-            }
+                    };
+                    responses.Add(Constants.StatusCode200, response);
+                }
 
+            }
             // both action & function has the default response.
             responses.Add(Constants.StatusCodeDefault, Constants.StatusCodeDefault.GetResponse());
 

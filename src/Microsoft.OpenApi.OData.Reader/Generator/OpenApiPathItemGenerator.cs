@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.OData.Common;
@@ -35,13 +36,19 @@ namespace Microsoft.OpenApi.OData.Generator
             settings.EnableKeyAsSegment = context.KeyAsSegment;
             foreach (ODataPath path in context.AllPaths)
             {
-                IPathItemHandler handler = context.PathItemHanderProvider.GetHandler(path.Kind);
-                if (handler == null)
+                try
                 {
-                    continue;
-                }
+                    IPathItemHandler handler = context.PathItemHanderProvider.GetHandler(path.Kind);
+                    if (handler == null)
+                    {
+                        continue;
+                    }
 
-                pathItems.Add(path.GetPathItemName(settings), handler.CreatePathItem(context, path));
+                    pathItems.Add(path.GetPathItemName(settings), handler.CreatePathItem(context, path));
+                }catch(Exception ex)
+                {
+                    System.Diagnostics.Trace.WriteLine("Error generating path:" + ex.Message);
+                }
             }
 
             return pathItems;
